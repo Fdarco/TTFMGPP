@@ -4,7 +4,7 @@ The data of network (`SUMOFiles/node.csv`, `SUMOFiles/link.csv`, `SUMOFiles/dema
 
 # Usage
 
-<mark>Caution please: If you just want to see the performance of our model, you can skip to the section `Run the model`, since all the files have already been generated in this repository.</mark>
+**Caution please: If you just want to see the performance of our model, you can skip to the section `Run the model`, since all the files have already been generated in this repository.**
 
 At first, we should build the network from `SUMOFiles/node.csv` and `SUMOFiles/link.csv`. The follow instructions can help finish it:
 
