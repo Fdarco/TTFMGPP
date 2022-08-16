@@ -158,15 +158,13 @@ def genTAZ(Gra: Graph):
         print('''</additional>''', file=af)
 
 
-
-
 if __name__ == '__main__':
     # jamEdges = ['101791to101790', '101792to101791', '100234to101790', '101794to101790']
     # for ed in jamEdges:
     #     el = limaG.getLink(ed)
     #     print(el)
-    # genTAZ(limaG)
+    genTAZ(limaG)
 
-    for v in limaG.nodes.values():
-        if v.zoneID == '149':
-            print(v)
+    # for v in limaG.nodes.values():
+    #     if v.zoneID == '149':
+    #         print(v)

@@ -103,7 +103,7 @@ def genLinkDictionary():
 
 
 if __name__ == '__main__':
-    # writeNodeXML()
-    # writeLinkXML()
+    writeNodeXML()
+    writeLinkXML()
     # writeLinkFFS()
-    genLinkDictionary()
+    # genLinkDictionary()
