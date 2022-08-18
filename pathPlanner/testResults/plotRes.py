@@ -26,7 +26,7 @@ def plotRes(l1, l2, eID, flag, pidx, fidx):
     plt.subplot(2, 2, fidx)
     plt.plot(xx, l1[:pidx], color='blue')
     plt.plot(xx, l2[:pidx], color='red')
-    plt.legend(['TTFMGPP', 'duarouter'])
+    plt.legend(['TTFM', 'SUMO'])
     plt.xlabel('time')
     plt.ylabel('vehicle numbers')
     plt.title('edge {} {}'.format(eID, flag))
