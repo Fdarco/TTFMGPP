@@ -42,7 +42,7 @@ def updateMSRInodeTab(msri: TTFM, nd: str, currT: float, segs: int):
 
 # aftering applying node model, the node table should update each step
 # interval = 5 seconds
-def MSRIres(testMSRI, routesInfo, edgesList):
+def MSRIres(testMSRI, routesInfo):
     for row in routesInfo:
         dt = row[0]
         rou = row[1].split(' ')
@@ -68,16 +68,8 @@ def MSRIres(testMSRI, routesInfo, edgesList):
             dt += outWait
             updateMSRI(testMSRI, lk, dt, 0)
 
-    edgesFlowInMSRI = {}
-    edgesFlowOutMSRI = {}
-    for ed in edgesList:
-        edgesFlowInMSRI[ed] = testMSRI.ifTable[ed]
-        edgesFlowOutMSRI[ed] = testMSRI.ofTable[ed]
-
-    return edgesFlowInMSRI, edgesFlowOutMSRI
-
 # interval = 60 seconds
-def SUMOres(edgesList):
+def SUMOres():
     edgesFlowInSUMO = defaultdict(list)
     edgesFlowOutSUMO = defaultdict(list)
     elementTree = ET.parse('../SUMOFiles/duarouter.edgesinfo.xml')
@@ -87,11 +79,23 @@ def SUMOres(edgesList):
             eID = edge.attrib['id']
             entered = int(edge.attrib['entered'])
             left = int(edge.attrib['left'])
-            if eID in edgesList:
-                edgesFlowInSUMO[eID].append(entered)
-                edgesFlowOutSUMO[eID].append(left)
+            edgesFlowInSUMO[eID].append(entered)
+            edgesFlowOutSUMO[eID].append(left)
 
     return edgesFlowInSUMO, edgesFlowOutSUMO
+
+
+def segCum(inList, cumStep):
+    outList = []
+    segs = 0
+    cnt = 0
+    for elem in inList:
+        segs += elem
+        cnt += 1
+        if cnt % cumStep == 0:
+            outList.append(segs)
+            segs = 0
+    return outList
 
 
 def getMSRITT(msri, edgesList):
@@ -125,34 +129,44 @@ def getSUMOTT(edgesList):
 
 
 if __name__ == '__main__':
-    randEdgesList = [
-        '100653to100655', '103588to103587', '101933to101935', '102500to102506'
-        ]
-    routesInfo = getRouInfo()
-    testMSRI = TTFM('lima', 10000, 5)
-    efiMSRI, efoMSRI = MSRIres(testMSRI, routesInfo, randEdgesList)
-
-    TTedgesList = [
-        '100653to100655', '103588to103587', '101933to101935', '102500to102506'
-        ]
-
-    edgesTTMSRI = getMSRITT(testMSRI, TTedgesList)
-    edgesTTSUMO = getSUMOTT(TTedgesList)
-
-    efiSUMO, efoSUMO = SUMOres(randEdgesList)
-
+    import numpy as np
     import json
 
-    jefiMSRI = json.dumps(efiMSRI)
-    jefoMSRI = json.dumps(efoMSRI)
-    jefiSUMO = json.dumps(efiSUMO)
-    jefoSUMO = json.dumps(efoSUMO)
+    routesInfo = getRouInfo()
+    testMSRI = TTFM('lima', 10000, 5)
+    MSRIres(testMSRI, routesInfo)
 
-    def writeFile(data, fileName):
-        with open(fileName, 'w') as f:
-            f.write(data)
+    efiSUMO, efoSUMO = SUMOres()
 
-    writeFile(jefiMSRI, 'testResults/efiMSRI.json')
-    writeFile(jefoMSRI, 'testResults/efoMSRI.json')
-    writeFile(jefiSUMO, 'testResults/efiSUMO.json')
-    writeFile(jefoSUMO, 'testResults/efoSUMO.json')
+    flowinMAPE = {}
+    flowoutMAPE = {}
+
+    for ik, iv in efiSUMO.items():
+        flowinTTFM = testMSRI.ifTable[ik]
+        cutFITTFM = np.array(segCum(flowinTTFM, 60)[:30], dtype=float)
+        cutFISUMO = np.array(segCum(iv, 5)[:30], dtype=float)
+        inError = np.abs(cutFITTFM - cutFISUMO)
+        flowinMAPE[ik] = np.sum(
+            np.divide(inError, cutFISUMO, out=np.zeros_like(inError), where=cutFISUMO!=0)
+            ) / len(cutFISUMO)
+
+
+    for ok, ov in efoSUMO.items():
+        flowoutTTFM = testMSRI.ofTable[ok]
+        cutFOTTFM = np.array(segCum(flowoutTTFM, 60)[:30], dtype=float)
+        cutFOSUMO = np.array(segCum(ov, 5)[:30], dtype=float)
+        outError = np.abs(cutFOTTFM - cutFOSUMO)
+        flowoutMAPE[ik] = np.sum(
+            np.divide(outError, cutFOSUMO, out=np.zeros_like(outError), where=cutFOSUMO!=0)
+            ) / len(cutFOSUMO)
+
+
+    jsonFlowinMAPE = json.dumps(flowinMAPE)
+    jsonFlowoutMAPE = json.dumps(flowoutMAPE)
+
+    with open('testResults/flowinMAPE.json', 'w') as fi:
+        fi.write(jsonFlowinMAPE)
+
+
+    with open('testResults/flowoutMAPE.json', 'w') as fo:
+        fo.write(jsonFlowoutMAPE)
