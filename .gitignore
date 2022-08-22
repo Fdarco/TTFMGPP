@@ -7,3 +7,6 @@ SUMOFiles/TTFMGPP.edgesinfo.xml
 SUMOFiles/TTFMGPP.tripinfo.xml
 
 pathPlanner/__pycache__/
+
+pathPlanner/testResults/
+pathPlanner/testTTFM.py
