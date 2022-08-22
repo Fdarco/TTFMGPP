@@ -1,6 +1,8 @@
 from random import random
 import xml.etree.ElementTree as ET
 from matplotlib import pyplot as plt
+# plt.style.use('bmh')
+plt.rc('font',family='Times New Roman') 
 from collections import defaultdict
 import numpy as np
 
@@ -79,6 +81,6 @@ def pltshow(npRandomEMD, npTMSGPPEMD):
 
 
 if __name__ == '__main__':
-    writeFile()
+    # writeFile()
     npRandomEMD, npTMSGPPEMD = readFile()
     pltshow(npRandomEMD, npTMSGPPEMD)

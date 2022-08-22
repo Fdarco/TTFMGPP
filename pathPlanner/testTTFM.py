@@ -146,9 +146,7 @@ if __name__ == '__main__':
         cutFITTFM = np.array(segCum(flowinTTFM, 60)[:30], dtype=float)
         cutFISUMO = np.array(segCum(iv, 5)[:30], dtype=float)
         inError = np.abs(cutFITTFM - cutFISUMO)
-        flowinMAPE[ik] = np.sum(
-            np.divide(inError, cutFISUMO, out=np.zeros_like(inError), where=cutFISUMO!=0)
-            ) / len(cutFISUMO)
+        flowinMAPE[ik] = np.sum(inError) / len(cutFISUMO)
 
 
     for ok, ov in efoSUMO.items():
@@ -156,9 +154,7 @@ if __name__ == '__main__':
         cutFOTTFM = np.array(segCum(flowoutTTFM, 60)[:30], dtype=float)
         cutFOSUMO = np.array(segCum(ov, 5)[:30], dtype=float)
         outError = np.abs(cutFOTTFM - cutFOSUMO)
-        flowoutMAPE[ik] = np.sum(
-            np.divide(outError, cutFOSUMO, out=np.zeros_like(outError), where=cutFOSUMO!=0)
-            ) / len(cutFOSUMO)
+        flowoutMAPE[ok] = np.sum(outError) / len(cutFOSUMO)
 
 
     jsonFlowinMAPE = json.dumps(flowinMAPE)

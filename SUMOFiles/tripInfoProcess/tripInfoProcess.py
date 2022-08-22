@@ -4,6 +4,8 @@ import pandas as pd
 import seaborn as sns
 sns.set_theme(style="whitegrid")
 from matplotlib import pyplot as plt
+plt.style.use('classic')
+plt.rc('font',family='Times New Roman') 
 
 
 # Index(['id', 'depart', 'departLane', 'departPos', 'departSpeed', 'departDelay',
