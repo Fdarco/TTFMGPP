@@ -5,7 +5,11 @@ import seaborn as sns
 sns.set_theme(style="whitegrid")
 from matplotlib import pyplot as plt
 plt.style.use('classic')
-plt.rc('font',family='Times New Roman') 
+font = {
+    'family': 'Times New Roman',
+    'size': 24
+}
+plt.rc('font', **font)
 
 
 # Index(['id', 'depart', 'departLane', 'departPos', 'departSpeed', 'departDelay',
@@ -42,7 +46,8 @@ sns.violinplot(
     x="Types", y="Travel time (s)", data=travelTimeDF, 
     cale="count", inner="quartile", palette="pastel"
     )
-plt.savefig('travelTime.png')
+plt.savefig('travelTime.svg')
+plt.close()
 # plt.show()
 
 
@@ -51,5 +56,6 @@ sns.violinplot(
     x='Types', y='Time loss (s)', data=timeLossDF,
     scale="count", inner="quartile", palette="pastel"
     )
-plt.savefig('timeLoss.png')
+plt.savefig('timeLoss.svg')
+plt.close()
 # plt.show()

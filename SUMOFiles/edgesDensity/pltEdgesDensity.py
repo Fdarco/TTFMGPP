@@ -77,10 +77,11 @@ def pltshow(npRandomEMD, npTMSGPPEMD):
     plt.fill_between(xx, zeroLine, diff, alpha=0.5)
     plt.xlabel('Edges')
     plt.ylabel('Density difference (veh/km)')
-    plt.savefig('DensityDiff.png')
+    plt.savefig('DensityDiff.svg')
 
 
 if __name__ == '__main__':
     # writeFile()
     npRandomEMD, npTMSGPPEMD = readFile()
+    print(len(npRandomEMD))
     pltshow(npRandomEMD, npTMSGPPEMD)
