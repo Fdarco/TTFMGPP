@@ -1,15 +1,10 @@
 # import xml.etree.ElementTree as ET
 
+from turtle import position
 import pandas as pd
 import seaborn as sns
-sns.set_theme(style="whitegrid")
+sns.set_theme(style="ticks",font='Times New Roman',font_scale=1.4)
 from matplotlib import pyplot as plt
-plt.style.use('classic')
-font = {
-    'family': 'Times New Roman',
-    'size': 24
-}
-plt.rc('font', **font)
 
 
 # Index(['id', 'depart', 'departLane', 'departPos', 'departSpeed', 'departDelay',
@@ -36,26 +31,36 @@ travelTimeSerise = pd.concat([duaTravelTime, TMSGPPTravelTime])
 timeLossSerise = pd.concat([duaTimeLoss, TMSGPPTimeLoss])
 TypeSerise = pd.concat([duaType, TMSGPPType])
 
+# print(travelTimeSerise.describe())
+# print(timeLossSerise.describe())
+
+# plt.violinplot([duaTravelTime, TMSGPPTravelTime]) 
+# plt.show()
+
 
 travelTimeDF = pd.DataFrame({'Travel time (s)': travelTimeSerise, 'Types': TypeSerise})
 timeLossDF = pd.DataFrame({'Time loss (s)': timeLossSerise, 'Types': TypeSerise})
 
+# print(travelTimeDF.describe())
 
-plt.figure(figsize=(9, 10))
+# print(timeLossDF.describe())
+
+
+plt.figure(figsize=(9.2, 10))
 sns.violinplot(
     x="Types", y="Travel time (s)", data=travelTimeDF, 
-    cale="count", inner="quartile", palette="pastel"
+    scale="width", inner="quartile", palette="coolwarm", cut=0
     )
-plt.savefig('travelTime.svg')
+plt.savefig('travelTime.png')
 plt.close()
 # plt.show()
 
 
-plt.figure(figsize=(9, 10))
+plt.figure(figsize=(9.2, 10))
 sns.violinplot(
     x='Types', y='Time loss (s)', data=timeLossDF,
-    scale="count", inner="quartile", palette="pastel"
+    scale="width", inner="quartile", palette="coolwarm", cut=0
     )
-plt.savefig('timeLoss.svg')
+plt.savefig('timeLoss.png')
 plt.close()
 # plt.show()
