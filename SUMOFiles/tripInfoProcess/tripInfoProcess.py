@@ -23,6 +23,11 @@ duaTimeLoss = duarouterTripInfo['timeLoss'].copy()
 TMSGPPTravelTime = TMSGPPTripInfo['duration'].copy()
 TMSGPPTimeLoss = TMSGPPTripInfo['timeLoss'].copy()
 
+print(duaTravelTime.describe())
+print(duaTimeLoss.describe())
+print(TMSGPPTravelTime.describe())
+print(TMSGPPTimeLoss.describe())
+
 
 duaType = pd.Series(['duarouter']*duaTravelTime.shape[0])
 TMSGPPType = pd.Series(['TTFMGPP']*TMSGPPTravelTime.shape[0])
