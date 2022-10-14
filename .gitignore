@@ -1,12 +1,11 @@
 SUMOFiles/SSD.json
 
-SUMOFiles/duarouter.edgesinfo.xml
-SUMOFiles/duarouter.tripinfo.xml
-
-SUMOFiles/TTFMGPP.edgesinfo.xml
-SUMOFiles/TTFMGPP.tripinfo.xml
 
 pathPlanner/__pycache__/
 
 pathPlanner/testResults/
 pathPlanner/testTTFM.py
+
+
+*.edgesinfo.xml
+*.tripinfo.xml
