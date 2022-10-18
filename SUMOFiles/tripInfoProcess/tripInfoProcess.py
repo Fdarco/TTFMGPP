@@ -14,26 +14,34 @@ from matplotlib import pyplot as plt
 
 
 duarouterTripInfo = pd.read_xml('../duarouter.tripinfo.xml', )
+PPPTripinfo = pd.read_xml('../PPPlanner.tripinfo.xml')
 TMSGPPTripInfo = pd.read_xml('../TTFMGPP.tripinfo.xml')
 
 
 duaTravelTime = duarouterTripInfo['duration'].copy()   # pd.Serise
 duaTimeLoss = duarouterTripInfo['timeLoss'].copy()
+PPPTravelTime = PPPTripinfo['duration'].copy()
+PPPTimeLoss = PPPTripinfo['timeLoss'].copy()
 TMSGPPTravelTime = TMSGPPTripInfo['duration'].copy()
 TMSGPPTimeLoss = TMSGPPTripInfo['timeLoss'].copy()
 
 print(duaTravelTime.describe())
 print(duaTimeLoss.describe())
+print('='*20)
+print(PPPTravelTime.describe())
+print(PPPTimeLoss.describe())
+print('='*20)
 print(TMSGPPTravelTime.describe())
 print(TMSGPPTimeLoss.describe())
 
 
 duaType = pd.Series(['duarouter']*duaTravelTime.shape[0])
+PPPType = pd.Series(['PPPlanner']*PPPTravelTime.shape[0])
 TMSGPPType = pd.Series(['TTFMGPP']*TMSGPPTravelTime.shape[0])
 
-travelTimeSerise = pd.concat([duaTravelTime, TMSGPPTravelTime])
-timeLossSerise = pd.concat([duaTimeLoss, TMSGPPTimeLoss])
-TypeSerise = pd.concat([duaType, TMSGPPType])
+travelTimeSerise = pd.concat([duaTravelTime, PPPTravelTime, TMSGPPTravelTime])
+timeLossSerise = pd.concat([duaTimeLoss, PPPTimeLoss, TMSGPPTimeLoss])
+TypeSerise = pd.concat([duaType, PPPType, TMSGPPType])
 
 # print(travelTimeSerise.describe())
 # print(timeLossSerise.describe())
@@ -55,7 +63,7 @@ sns.violinplot(
     x="Types", y="Travel time (s)", data=travelTimeDF, 
     scale="width", inner="quartile", palette="coolwarm", cut=0
     )
-plt.savefig('travelTime.png')
+plt.savefig('travelTime-ap.png')
 plt.close()
 # plt.show()
 
@@ -65,6 +73,6 @@ sns.violinplot(
     x='Types', y='Time loss (s)', data=timeLossDF,
     scale="width", inner="quartile", palette="coolwarm", cut=0
     )
-plt.savefig('timeLoss.png')
+plt.savefig('timeLoss-ap.png')
 plt.close()
 # plt.show()
