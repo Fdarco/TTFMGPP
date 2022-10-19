@@ -75,12 +75,14 @@ class edgeInfo:
         if toNodeID in jNodes:
             toNodeCap = JnodeCap[toNodeID] * self.DeltaT / 3600
             currNodeCum = self.msri.jnodeTable[toNodeID][currInterval]
+            # node capacity calibration to fit sumo simulation
             nodeVacancy = toNodeCap - 1 - currNodeCum
         else:
             nodeVacancy = 100   # represent a very large number
         if nodeVacancy >= 1:
             currOutFlow = self.msri.ofTable[self.id][currInterval]
             # print(self.id, ':', self.capacity)
+            # capacity calibration to fit sumo simulation
             if currOutFlow + 1 <= self.capacity - 1:
                 return True
             else:
