@@ -163,7 +163,8 @@ if __name__ == '__main__':
     # for ed in jamEdges:
     #     el = limaG.getLink(ed)
     #     print(el)
-    genTAZ(limaG)
+    # genTAZ(limaG)
+    pass
 
     # for v in limaG.nodes.values():
     #     if v.zoneID == '149':

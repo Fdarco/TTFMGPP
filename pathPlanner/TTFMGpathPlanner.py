@@ -9,6 +9,7 @@ from constants import jNodes, staticSD
 import xml.etree.ElementTree as ET
 from progressbar import *
 import time
+import sys
 
 
 def getRouInfo() -> list:
@@ -92,9 +93,6 @@ def sortPriority(routesInfo: list):
 
 def TTFMRun(msri: TTFM, routesInfo: list):
     sTime = time.time()
-    total = len(routesInfo)
-    widgets = ['Progress: ', Percentage(), ' ', Bar('#'),' ', Timer()]
-    pbar = ProgressBar(widgets=widgets).start()
     cnt = 0
     PlannedRoutes = []
     for row in routesInfo:
@@ -126,7 +124,8 @@ def TTFMRun(msri: TTFM, routesInfo: list):
             updateTTFM(msri, lk, dt+emitime+inWait, 1)
             updateTTFM(msri, lk, dt+departTime, 0)
         cnt += 1
-        pbar.update(int((cnt/(total-1))*100))
+        sys.stdout.write('\r' + 'Processing: ' + str(round(cnt/len(routesInfo), 4)))
+        sys.stdout.flush()
     
     eTime = time.time()
     print('\n')
@@ -147,7 +146,7 @@ if __name__ == '__main__':
     testTTFM = TTFM('lima', 200000, 5)
     routesInfo = getRouInfo()
     seqRoutesInfo = sortPriority(routesInfo)
-    print(seqRoutesInfo)
+    # print(seqRoutesInfo)
 
     print('Information obtained successfully.')
     plannedRoutes = TTFMRun(testTTFM, seqRoutesInfo)
