@@ -34,7 +34,7 @@ print('='*20)
 print(TMSGPPTravelTime.describe())
 print(TMSGPPTimeLoss.describe())
 
-
+'''
 duaType = pd.Series(['duarouter']*duaTravelTime.shape[0])
 PPPType = pd.Series(['PPPlanner']*PPPTravelTime.shape[0])
 TMSGPPType = pd.Series(['TTFMGPP']*TMSGPPTravelTime.shape[0])
@@ -42,22 +42,25 @@ TMSGPPType = pd.Series(['TTFMGPP']*TMSGPPTravelTime.shape[0])
 travelTimeSerise = pd.concat([duaTravelTime, PPPTravelTime, TMSGPPTravelTime])
 timeLossSerise = pd.concat([duaTimeLoss, PPPTimeLoss, TMSGPPTimeLoss])
 TypeSerise = pd.concat([duaType, PPPType, TMSGPPType])
-
+'''
 # print(travelTimeSerise.describe())
 # print(timeLossSerise.describe())
 
 # plt.violinplot([duaTravelTime, TMSGPPTravelTime]) 
 # plt.show()
 
-
+'''
 travelTimeDF = pd.DataFrame({'Travel time (s)': travelTimeSerise, 'Types': TypeSerise})
 timeLossDF = pd.DataFrame({'Time loss (s)': timeLossSerise, 'Types': TypeSerise})
+'''
+
 
 # print(travelTimeDF.describe())
 
 # print(timeLossDF.describe())
 
 
+'''
 plt.figure(figsize=(9.2, 10))
 sns.violinplot(
     x="Types", y="Travel time (s)", data=travelTimeDF, 
@@ -76,3 +79,4 @@ sns.violinplot(
 plt.savefig('timeLoss-ap.png')
 plt.close()
 # plt.show()
+'''

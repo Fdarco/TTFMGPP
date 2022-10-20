@@ -101,5 +101,5 @@ def pltshow(npRandomEMD, npARNMEMD, npPPPEMD):
 if __name__ == '__main__':
     # writeFile()
     npRandomEMD, npARNMEMD, npPPPEMD = readFile()
-    print(len(npRandomEMD))
-    pltshow(npRandomEMD, npARNMEMD, npPPPEMD)
+    # print(len(npRandomEMD))
+    pltshow(npRandomEMD[-500:], npARNMEMD[-500:], npPPPEMD[-500:])
