@@ -15,6 +15,13 @@ with open('../SUMOFiles/SSD.json', 'r') as f2:
 with open('../SUMOFiles/edgesInfoFromNodecsv.json', 'r') as f3:
     content =  f3.read()
     sEdgesInfo = json.loads(content)
+    # road capacity calibration to fit sumo simulation
+    edgesList = ['101791to101790', '101794to101790', '101789to101790', '101792to101791',
+    '101746to101794', '101756to101758', '101760to101758']
+    for edge in edgesList:
+        # print(edge)
+        # print(sEdgesInfo[edge][0])
+        sEdgesInfo[edge][0] = 1800
 
 
 edgesNlanes = {}

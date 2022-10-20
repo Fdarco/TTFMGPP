@@ -40,6 +40,8 @@ class edgeInfo:
         self.DeltaT = msri.interval
         self.length = getEdgeLength(self.id)
         self.capacity = sEdgesInfo[self.id][0] / 3600 * self.DeltaT
+        if self.capacity <= 2:
+            self.capacity = 2.1
         self.nlanes = sEdgesInfo[self.id][1]
         self.freeSpeed = sEdgesInfo[self.id][2]
         self.backwardSpeed = 5.28
@@ -74,9 +76,17 @@ class edgeInfo:
         toNodeID = self.id.split('to')[-1]
         if toNodeID in jNodes:
             toNodeCap = JnodeCap[toNodeID] * self.DeltaT / 3600
-            currNodeCum = self.msri.jnodeTable[toNodeID][currInterval]
+            if toNodeCap <= 2:
+                toNodeCap = 2.1
+            try:
+                currNodeCum = self.msri.jnodeTable[toNodeID][currInterval]
+            except IndexError:
+                print(toNodeCap)
+                print(self.capacity)
+                raise IndexError
             # node capacity calibration to fit sumo simulation
             nodeVacancy = toNodeCap - 1 - currNodeCum
+
         else:
             nodeVacancy = 100   # represent a very large number
         if nodeVacancy >= 1:
@@ -84,6 +94,7 @@ class edgeInfo:
             # print(self.id, ':', self.capacity)
             # capacity calibration to fit sumo simulation
             if currOutFlow + 1 <= self.capacity - 1:
+            # if currOutFlow + 1 <= self.capacity:
                 return True
             else:
                 return False
@@ -161,7 +172,7 @@ class TDshortestPath:
     @staticmethod
     def buildPath(ep: Point): 
         if not ep.parent:
-            raise SettingError('Destination is origin!')
+            raise SettingError('    Destination is origin!')
         path = []   
         currP = ep
         # edge, emitTime, inWait
@@ -201,7 +212,8 @@ class TDshortestPath:
                 try:
                     TDshortestPath.buildPath(popP)
                     return TDshortestPath.buildPath(popP)
-                except SettingError:
+                except SettingError as e:
+                    print(e)
                     return
 
             currNode = limaG.getNode(popP.id)

@@ -1,20 +1,22 @@
 # 有关 CV 渗透率 p 的实验，将纯 HV 作为历史流量
 # 用历史流量乘以 (1-p) 作为路段上的 HV 交通流
 
-from turtle import pen
 from TTFM import TTFM, edgeInfo, TDshortestPath
-from constants import jNodes, getEdgeLength, sEdgesInfo
+from constants import jNodes
 
 import xml.etree.ElementTree as ET
-from collections import defaultdict
 
 import random
 import time
 from progressbar import *
+import sys
 
 
-def getRouInfo():
-    routeFile = '../SUMOFiles/lima.rou.xml'
+def getRouInfo(rf: str):
+    if not rf:
+        routeFile = '../SUMOFiles/lima.rou.xml'
+    else:
+        routeFile = rf
     elementTree = ET.ElementTree(file=routeFile)
     root = elementTree.getroot()
     routesInfo = []
@@ -86,9 +88,10 @@ def penRedunction(tm: TTFM, penetration: float) -> TTFM:
 
 
 def TTFMPenRun(tm: TTFM, routesInfo: list, penetration: float):
-    print('Routes are planning with CV penetration %.1f'%penetration)
+    print('\nRoutes are planning with CV penetration %.1f'%penetration)
     sTime = time.time()
     plannedRoutes = []
+    cnt = 0
     for row in routesInfo:
         rnum = random.uniform(0, 1)
         # 当随机数小于渗透率就认为这辆车是 CV 
@@ -122,9 +125,12 @@ def TTFMPenRun(tm: TTFM, routesInfo: list, penetration: float):
                 updateTTFM(tm, lk, dt+departTime, 0)
         else:
             plannedRoutes.append(row)
+        cnt += 1
+        sys.stdout.write('\r' + 'Processing: ' + str(round(cnt/len(routesInfo), 4)))
+        sys.stdout.flush()
 
     eTime = time.time()
-    print('Routes has been planned with CV penetration %.1f, planning time: %.2f'%(penetration, (eTime - sTime)))
+    print('\nRoutes has been planned with CV penetration %.1f, planning time: %.2f'%(penetration, (eTime - sTime)))
     return plannedRoutes
 
 
@@ -139,9 +145,10 @@ if __name__ == '__main__':
     from copy import deepcopy
 
     # 纯 HV 环境下的背景交通流
-    routesInfo = getRouInfo()
+    routesInfo = getRouInfo('../SUMOFiles/lima.rou.xml')
     print('Route infomation extracted sucessfully.')
-    fullHVTTFM = TTFM('lima', 10000, 5)
+    # full HV historical TTFM
+    fullHVTTFM = TTFM('lima', 25000, 5)
     TTFMRes(fullHVTTFM, routesInfo)
     print('Full HV background TTFM generated successfully.')
 

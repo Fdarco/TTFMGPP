@@ -140,6 +140,10 @@ def getJnodeCap():
     for k, v in limaG.nodes.items():
         JnodeCap[k] = v.calCap()
 
+    # node capacity calibration to fit sumo
+    nodeslist = [101790, 101852, 101862, 101758, 101791, 100234, 101792, 100177, 101896, 100171, 101795, 100311]
+    for node in nodeslist:
+        JnodeCap[str(node)] = 1800
     return JnodeCap
 
 
@@ -164,7 +168,11 @@ if __name__ == '__main__':
     #     el = limaG.getLink(ed)
     #     print(el)
     # genTAZ(limaG)
-    pass
+    nodeslist = [101790, 101852, 101862, 101758, 101791, 100234, 101792, 100177, 101896, 100171, 101795, 100311]
+    for node in nodeslist:
+        print(node)
+        print(JnodeCap[str(node)]/3600*5)
+
 
     # for v in limaG.nodes.values():
     #     if v.zoneID == '149':

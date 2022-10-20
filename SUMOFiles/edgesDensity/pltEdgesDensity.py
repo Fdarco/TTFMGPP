@@ -1,4 +1,5 @@
 from random import random
+from turtle import color
 import xml.etree.ElementTree as ET
 from matplotlib import pyplot as plt
 # plt.style.use('bmh')
@@ -8,7 +9,8 @@ import numpy as np
 
 
 randomFile = '../duarouter.edgesinfo.xml'
-TMSGPPFile = '../TTFMGPP.edgesinfo.xml'
+PPPFile = '../PPP.edgesinfo.xml'
+ARNMFile = '../TTFMGPP.edgesinfo.xml'
 
 
 def getEdgesDensity(eif: str) -> dict:
@@ -19,7 +21,7 @@ def getEdgesDensity(eif: str) -> dict:
         for edge in interval:
             eid = edge.attrib['id']
             try:
-                # some edges don't have 
+                # some edges don't have attribute 'density'
                 eden = float(edge.attrib['density'])
                 edgesDensity[eid].append(eden)
             except:
@@ -30,58 +32,74 @@ def getEdgesDensity(eif: str) -> dict:
 
 def writeFile():
     randomEMD = getEdgesDensity(randomFile)
-    TMSGPPEMD = getEdgesDensity(TMSGPPFile)
+    PPPEMD = getEdgesDensity(PPPFile)
+    ARNMEMD = getEdgesDensity(ARNMFile)
 
     randomKeys = set(randomEMD.keys())
-    TMSGPPKeys = set(TMSGPPEMD.keys())
+    ARNMKeys = set(ARNMEMD.keys())
+    PPPKeys = set(PPPEMD.keys())
 
-    intersectionKeys = randomKeys & TMSGPPKeys
+    intersectionKeys = randomKeys & ARNMKeys & PPPKeys
 
-    randomMaxDen = []
+    randomAvgDen = []
     for rk, rv in randomEMD.items():
         if rk in intersectionKeys:
-            randomMaxDen.append(np.average(rv))
+            randomAvgDen.append(np.average(rv))
 
-    TTFMGPPMaxDen = []
-    for tk, tv in TMSGPPEMD.items():
+    ARNMAvgDen = []
+    for tk, tv in ARNMEMD.items():
         if tk in intersectionKeys:
-            TTFMGPPMaxDen.append(np.average(tv))
+            ARNMAvgDen.append(np.average(tv))
 
-    randomMaxDen.sort()
-    TTFMGPPMaxDen.sort()
+    PPPAvgDen = []
+    for pk, pv in PPPEMD.items():
+        if pk in intersectionKeys:
+            PPPAvgDen.append(np.average(pv))
 
-    np.array(randomMaxDen).tofile('duarouterEMD.bin')
-    np.array(TTFMGPPMaxDen).tofile('TTFMGPPEMD.bin')
+    randomAvgDen.sort()
+    ARNMAvgDen.sort()
+    PPPAvgDen.sort()
+
+    np.array(randomAvgDen).tofile('duarouterEMD.bin')
+    np.array(ARNMAvgDen).tofile('ARNMEMD.bin')
+    np.array(PPPAvgDen).tofile('PPPEMD.bin')
 
 
 def readFile():
     npRand = np.fromfile('duarouterEMD.bin')
-    npTMS = np.fromfile('TTFMGPPEMD.bin')
-    return npRand, npTMS
+    npARNM = np.fromfile('ARNMEMD.bin')
+    npPPP = np.fromfile('PPPEMD.bin')
+    return npRand, npARNM, npPPP
 
 
-def pltshow(npRandomEMD, npTMSGPPEMD):
-    diff = npRandomEMD - npTMSGPPEMD
+def pltshow(npRandomEMD, npARNMEMD, npPPPEMD):
+    diff_1 = npRandomEMD - npARNMEMD
+    diff_2 = npPPPEMD - npARNMEMD
     xx = list(range(len(npRandomEMD)))
     plt.figure(figsize=(9, 10))
     plt.subplot(2, 1, 1)
     plt.plot(xx, npRandomEMD)
-    plt.plot(xx, npTMSGPPEMD)
-    plt.fill_between(xx, npRandomEMD, npTMSGPPEMD, alpha=0.5)
+    plt.plot(xx, npPPPEMD, color='gray')
+    plt.plot(xx, npARNMEMD)
+
+    # plt.fill_between(xx, npRandomEMD, npARNMEMD, alpha=0.5)
     plt.ylabel('Density (veh/km)')
-    plt.legend(['duarouter', 'TTFMGPP', 'difference'])
+    plt.legend(['duarouter', 'PPP', 'ARNM'])
 
     plt.subplot(2, 1, 2)
     zeroLine = np.zeros((len(npRandomEMD), ))
-    plt.plot(xx, diff, color='#45aaf2')
-    plt.fill_between(xx, zeroLine, diff, alpha=0.5)
+    plt.plot(xx, diff_1, color='#45aaf2')
+    shadow1 = plt.fill_between(xx, zeroLine, diff_1, color='#45aaf2', alpha=0.5)
+    plt.plot(xx, diff_2, color='#e67e22')
+    shadow2 = plt.fill_between(xx, zeroLine, diff_2, color='#e67e22', alpha=0.8)
+    plt.legend([shadow1, shadow2], ['DD between duarouter and ARNM', 'DD between PPP and ARNM'])
     plt.xlabel('Edges')
     plt.ylabel('Density difference (veh/km)')
-    plt.savefig('DensityDiff.svg')
+    plt.savefig('DensityDiff.png')
 
 
 if __name__ == '__main__':
     # writeFile()
-    npRandomEMD, npTMSGPPEMD = readFile()
+    npRandomEMD, npARNMEMD, npPPPEMD = readFile()
     print(len(npRandomEMD))
-    pltshow(npRandomEMD, npTMSGPPEMD)
+    pltshow(npRandomEMD, npARNMEMD, npPPPEMD)

@@ -6,48 +6,48 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 
-# travelTimeList = []
-# travelTimeMeans = []
-# travelTimeMedians = []
-# timeLossList = []
-# timeLossMeans = []
-# timeLossMedians = []
-# plannerTypes = []
-# for i in range(11):
-#     print('File %i reading...'%i)
-#     penetration = i/10
-#     fileName = 'pen%.1f.tripinfo.xml' % penetration
-#     df = pd.read_xml(fileName)
-#     dfTravelTime = df['duration'].copy()
-#     dfTimeLoss = df['timeLoss'].copy()
-#     pType = pd.Series(['%.1f'%penetration]*df.shape[0])
-#     plannerTypes.append(pType)
-#     travelTimeMeans.append(dfTravelTime.mean())
-#     timeLossMeans.append(dfTimeLoss.mean())
-#     travelTimeMedians.append(dfTravelTime.median())
-#     timeLossMedians.append(dfTimeLoss.median())
-#     travelTimeList.append(dfTravelTime)
-#     timeLossList.append(dfTimeLoss)
+travelTimeList = []
+travelTimeMeans = []
+travelTimeMedians = []
+timeLossList = []
+timeLossMeans = []
+timeLossMedians = []
+plannerTypes = []
+for i in range(11):
+    print('File %i reading...'%i)
+    penetration = i/10
+    fileName = 'pen%.1f.tripinfo.xml' % penetration
+    df = pd.read_xml(fileName)
+    dfTravelTime = df['duration'].copy()
+    dfTimeLoss = df['timeLoss'].copy()
+    pType = pd.Series(['%.1f'%penetration]*df.shape[0])
+    plannerTypes.append(pType)
+    travelTimeMeans.append(dfTravelTime.mean())
+    timeLossMeans.append(dfTimeLoss.mean())
+    travelTimeMedians.append(dfTravelTime.median())
+    timeLossMedians.append(dfTimeLoss.median())
+    travelTimeList.append(dfTravelTime)
+    timeLossList.append(dfTimeLoss)
 
 
-# print('File reading finished.')
-# print('travel time mean:', travelTimeMeans)
-# print('travel time median:', travelTimeMedians)
-# print('time loss mean:', timeLossMeans)
-# print('time loss median:', timeLossMedians)
+print('File reading finished.')
+print('travel time mean:', travelTimeMeans)
+print('travel time median:', travelTimeMedians)
+print('time loss mean:', timeLossMeans)
+print('time loss median:', timeLossMedians)
 
 
-travelTimeMeans = [2487.0817927874205, 2003.6220373567728, 1647.3717155862503, 1440.2339664102967, 1310.9976455815413, 1273.4683409197928, 1143.3218960916654, 1102.5818552817454, 1048.2497881023387, 1040.6652644796736, 995.3146130905666]
-travelTimeMeans = list(map(int, travelTimeMeans))
+# travelTimeMeans = [2487.0817927874205, 2003.6220373567728, 1647.3717155862503, 1440.2339664102967, 1310.9976455815413, 1273.4683409197928, 1143.3218960916654, 1102.5818552817454, 1048.2497881023387, 1040.6652644796736, 995.3146130905666]
+# travelTimeMeans = list(map(int, travelTimeMeans))
 
-travelTimeMedians = [1167.0, 1017.0, 932.0, 872.0, 851.0, 801.0, 758.0, 726.0, 693.0, 675.0, 645.0]
-travelTimeMedians = list(map(int, travelTimeMedians))
+# travelTimeMedians = [1167.0, 1017.0, 932.0, 872.0, 851.0, 801.0, 758.0, 726.0, 693.0, 675.0, 645.0]
+# travelTimeMedians = list(map(int, travelTimeMedians))
 
-timeLossMeans = [1742.5608596716988, 1276.1604981949458, 934.7804420028253, 742.2326444828128, 638.9934496939258, 613.2505462250823, 495.4223406058704, 466.7940938628159, 424.72443289907386, 430.2089963898917, 396.018933291477]
-timeLossMeans = list(map(int, timeLossMeans))
+# timeLossMeans = [1742.5608596716988, 1276.1604981949458, 934.7804420028253, 742.2326444828128, 638.9934496939258, 613.2505462250823, 495.4223406058704, 466.7940938628159, 424.72443289907386, 430.2089963898917, 396.018933291477]
+# timeLossMeans = list(map(int, timeLossMeans))
 
-timeLossMedians = [197.67, 160.62, 146.08, 132.86, 131.06, 121.64, 114.85, 108.56, 103.3, 99.07, 92.9]
-timeLossMedians = list(map(int, timeLossMedians))
+# timeLossMedians = [197.67, 160.62, 146.08, 132.86, 131.06, 121.64, 114.85, 108.56, 103.3, 99.07, 92.9]
+# timeLossMedians = list(map(int, timeLossMedians))
 
 width = 0.4
 labels = [round(e/10, 1) for e in range(11)]
@@ -92,7 +92,7 @@ plt.savefig('timeLossBar.png')
 plt.close()
 # plt.show()
 
-'''
+
 print('DataFrame building...')
 travelTimeSeries = pd.concat(travelTimeList)
 timeLossSeries = pd.concat(timeLossList)
@@ -135,4 +135,3 @@ plt.legend([lntt], ['Average time loss'])
 plt.savefig('Timeloss.png')
 plt.close()
 # plt.show()
-'''
