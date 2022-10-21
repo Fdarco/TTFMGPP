@@ -172,7 +172,8 @@ class TDshortestPath:
     @staticmethod
     def buildPath(ep: Point): 
         if not ep.parent:
-            raise SettingError('    Destination is origin!')
+            # raise SettingError('    Destination is origin!')
+            return
         path = []   
         currP = ep
         # edge, emitTime, inWait
