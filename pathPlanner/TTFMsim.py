@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
 
     routesInfo = getRouInfo()
-    testTTFM = TTFM('lima', 10000, 5)
+    testTTFM = TTFM('lima', 20000, 5)
     TTFMRes(testTTFM, routesInfo)
 
     efiSUMO, efoSUMO = SUMOres()

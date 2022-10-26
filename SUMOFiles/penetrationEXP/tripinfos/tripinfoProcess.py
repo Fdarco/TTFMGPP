@@ -1,7 +1,7 @@
 from cProfile import label
 import pandas as pd
 import seaborn as sns
-sns.set_theme(style="ticks",font='Times New Roman',font_scale=1.4)
+sns.set_theme(style="ticks",font='Times New Roman',font_scale=2.0)
 from matplotlib import pyplot as plt
 import numpy as np
 
@@ -68,7 +68,7 @@ ax_t.set_ylabel('Median (s)')
 # ax_t.bar_label(ttmedian, travelTimeMedians)
 # plt.title('Travel time')
 plt.legend([ttmean, ttmedian], ['Mean of travel time', 'Median of travel time'])
-plt.savefig('travelTimeBar.png')
+plt.savefig('travelTimeBar.png', bbox_inches='tight', pad_inches=0.2)
 plt.close()
 # plt.show()
 
@@ -88,7 +88,7 @@ ax_t.set_ylabel('Median (s)')
 # ax_t.bar_label(ttmedian, timeLossMedians)
 # plt.title('Time loss')
 plt.legend([ttmean, ttmedian], ['Mean of time loss', 'Median of time loss'])
-plt.savefig('timeLossBar.png')
+plt.savefig('timeLossBar.png', bbox_inches='tight', pad_inches=0.2)
 plt.close()
 # plt.show()
 
