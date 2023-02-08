@@ -3,7 +3,7 @@ from turtle import color
 import xml.etree.ElementTree as ET
 from matplotlib import pyplot as plt
 # plt.style.use('bmh')
-plt.rc('font',family='Times New Roman', size=22) 
+plt.rc('font',family='simsun', size=22) 
 from collections import defaultdict
 import numpy as np
 
@@ -76,30 +76,30 @@ def pltshow(npRandomEMD, npARNMEMD, npPPPEMD):
     diff_1 = npRandomEMD - npARNMEMD
     diff_2 = npPPPEMD - npARNMEMD
     xx = list(range(len(npRandomEMD)))
-    plt.figure(figsize=(8, 5))
-    # plt.subplot(2, 1, 1)
-    # plt.plot(xx, npRandomEMD, linewidth=2)
+    plt.figure(figsize=(8, 9.2))
+    plt.subplot(2, 1, 1)
+    plt.plot(xx, npRandomEMD, linewidth=2, color='gray')
     # plt.plot(xx, npPPPEMD, color='gray', linewidth=2)
-    # plt.plot(xx, npARNMEMD, linewidth=2)
+    plt.plot(xx, npARNMEMD, linewidth=2)
 
-    # plt.xlabel('Roads')
-    # plt.ylabel('Density (veh/km)')
-    # plt.legend(['duarouter', 'PPP', 'IPP'])
+    plt.gca().xaxis.set_major_locator(plt.NullLocator())
 
-    # plt.subplot(2, 1, 2)
+    # plt.fill_between(xx, npRandomEMD, npARNMEMD, alpha=0.5)
+    plt.ylabel('道路密度 (veh/km)')
+    plt.legend(['duarouter', '本专利方法'])
 
+    plt.subplot(2, 1, 2)
     zeroLine = np.zeros((len(npRandomEMD), ))
     plt.plot(xx, diff_1, color='#45aaf2')
     shadow1 = plt.fill_between(xx, zeroLine, diff_1, color='#45aaf2', alpha=0.5)
-    plt.plot(xx, diff_2, color='#e67e22')
-    shadow2 = plt.fill_between(xx, zeroLine, diff_2, color='#e67e22', alpha=0.5)
-    plt.legend([shadow1, shadow2], ['duarouter - IPP', 'PPP - IPP'])
-    plt.xlabel('Roads')
-    plt.ylabel('Density difference (veh/km)')
+    # plt.plot(xx, diff_2, color='#e67e22')
+    # shadow2 = plt.fill_between(xx, zeroLine, diff_2, color='#e67e22', alpha=0.5)
+    # plt.legend([shadow1], ['duarouter - ARNM', 'PPP - ARNM'])
+    plt.xlabel('路段')
+    plt.ylabel('密度差值 (veh/km)')
+    plt.subplots_adjust(hspace=0.05)
 
-    # plt.subplots_adjust(hspace=0.05)
-
-    plt.savefig('densityDiff-c.svg', bbox_inches='tight', pad_inches=0.2)
+    plt.savefig('avgDenPatent.png', bbox_inches='tight', pad_inches=0.2)
 
 
 if __name__ == '__main__':

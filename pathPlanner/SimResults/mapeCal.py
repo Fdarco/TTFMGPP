@@ -39,15 +39,16 @@ def maehist(mae, col, ylab):
     hist = hist / sum(hist)   # get frequency of each bin
     bc = [(bins[i+1] + bins[i])/2 for i in range(len(bins)-1)]
     plt.bar(bc, hist, width=0.08, color=col, edgecolor='black',alpha=0.6)
-    plt.xlabel('MAE [veh/time]')
+    if ylab == 'flow out':
+        plt.xlabel('MAE [veh/time]')
     plt.ylabel('Frequency ({})'.format(ylab))
 
 
-plt.figure(figsize=(8, 8))
+plt.figure(figsize=(6, 6))
 plt.subplot(2, 1, 1)
 maehist(inmape, '#e74c3c', 'flow in')
 plt.subplot(2, 1, 2)
 maehist(outmape, '#3498db', 'flow out')
 # plt.show()
-plt.savefig('histmae.png')
+plt.savefig('histmae.svg', bbox_inches='tight')
 # exit(0)

@@ -54,12 +54,12 @@ def boundLines(ll, pidx, col, lab):
 def plotRes(l1, l2, eID, flag, pidx, fidx):
     xx = list(range(pidx))
     plt.subplot(2, 2, fidx)
-    boundLines(l1, pidx, '#3498db', 'TTFM')
+    boundLines(l1, pidx, '#3498db', 'Ours')
     boundLines(l2, pidx, '#e74c3c', 'SUMO')
     plt.legend()
     plt.xlabel('Time')
     plt.ylabel('Cumulative vehicle numbers')
-    plt.title('{} {}'.format(eID, flag))
+    plt.title('{}'.format(eID))
 
 
 efiTTFM = getData('efiTTFM.json')
@@ -85,10 +85,10 @@ for i in range(4):
     msriFlowInFiveMinutes = segCum(msriFlowIn, 60)
     sumoFlowIn = efiSUMO[ed] 
     sumoFlowInFiveMinutes = segCum(sumoFlowIn, 5)
-    plotRes(msriFlowInFiveMinutes, sumoFlowInFiveMinutes, 'edge-%i'%(i+1), 'flow-in', 25, i+1)
+    plotRes(msriFlowInFiveMinutes, sumoFlowInFiveMinutes, 'Inflow of Link-%i'%(i+1), 'flow-in', 25, i+1)
 
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
-plt.savefig('flowInCompare.png')
+plt.savefig('flowInCompare.svg', bbox_inches='tight')
 plt.close()
 # plt.show()
 
@@ -99,9 +99,9 @@ for i in range(4):
     msriFlowOutFiveMinutes = segCum(msriFlowOut, 60)
     sumoFlowOut = efoSUMO[ed] 
     sumoFlowOutFiveMinutes = segCum(sumoFlowOut, 5)
-    plotRes(msriFlowOutFiveMinutes, sumoFlowOutFiveMinutes, 'edge-%i'%(i+1), 'flow-out', 25, i+1)
+    plotRes(msriFlowOutFiveMinutes, sumoFlowOutFiveMinutes, 'Outflow of Link-%i'%(i+1), 'flow-out', 25, i+1)
 
 plt.subplots_adjust(wspace=0.2, hspace=0.4)
-plt.savefig('flowOutCompare.png')
+plt.savefig('flowOutCompare.svg', bbox_inches='tight')
 plt.close()
 # plt.show()

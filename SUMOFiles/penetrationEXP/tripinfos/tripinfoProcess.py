@@ -53,7 +53,7 @@ width = 0.4
 labels = [round(e/10, 1) for e in range(11)]
 
 
-fig = plt.figure(figsize=(10, 8))
+fig = plt.figure(figsize=(10, 6))
 ax = fig.add_subplot(111)
 ax_t = ax.twinx()
 ttx = np.arange(len(travelTimeMeans))
@@ -68,12 +68,12 @@ ax_t.set_ylabel('Median (s)')
 # ax_t.bar_label(ttmedian, travelTimeMedians)
 # plt.title('Travel time')
 plt.legend([ttmean, ttmedian], ['Mean of travel time', 'Median of travel time'])
-plt.savefig('travelTimeBar.png', bbox_inches='tight', pad_inches=0.2)
+plt.savefig('travelTimeBar.svg', bbox_inches='tight', pad_inches=0.2)
 plt.close()
 # plt.show()
 
 
-fig = plt.figure(figsize=(10, 8))
+fig = plt.figure(figsize=(10, 6))
 ax = fig.add_subplot(111)
 ax_t = ax.twinx()
 ttx = np.arange(len(timeLossMeans))
@@ -88,7 +88,7 @@ ax_t.set_ylabel('Median (s)')
 # ax_t.bar_label(ttmedian, timeLossMedians)
 # plt.title('Time loss')
 plt.legend([ttmean, ttmedian], ['Mean of time loss', 'Median of time loss'])
-plt.savefig('timeLossBar.png', bbox_inches='tight', pad_inches=0.2)
+plt.savefig('timeLossBar.svg', bbox_inches='tight', pad_inches=0.2)
 plt.close()
 # plt.show()
 
@@ -119,7 +119,7 @@ sns.violinplot(
 # 这里要加一个 ',' 不然不出图例，我也不知道为啥
 lntt, = plt.plot(list(range(len(travelTimeMeans))), travelTimeMeans, color='#8e44ad', marker='2')
 plt.legend([lntt], ['Average travel time'])
-plt.savefig('Traveltime.png')
+plt.savefig('Traveltime.svg')
 plt.close()
 # plt.show()
 
@@ -132,6 +132,6 @@ sns.violinplot(
 # 这里要加一个 ',' 不然不出图例，我也不知道为啥
 lntt, = plt.plot(list(range(len(travelTimeMeans))), travelTimeMeans, color='#8e44ad', marker='2')
 plt.legend([lntt], ['Average time loss'])
-plt.savefig('Timeloss.png')
+plt.savefig('Timeloss.svg')
 plt.close()
 # plt.show()

@@ -2,7 +2,7 @@
 
 import pandas as pd
 import seaborn as sns
-sns.set_theme(style="ticks",font='Times New Roman',font_scale=1.4)
+sns.set_theme(style="ticks",font='simsun',font_scale=2.2)
 from matplotlib import pyplot as plt
 
 
@@ -14,34 +14,21 @@ from matplotlib import pyplot as plt
 
 
 duarouterTripInfo = pd.read_xml('../duarouter.tripinfo.xml', )
-PPPTripinfo = pd.read_xml('../PPPlanner.tripinfo.xml')
 TMSGPPTripInfo = pd.read_xml('../TTFMGPP.tripinfo.xml')
 
 
 duaTravelTime = duarouterTripInfo['duration'].copy()   # pd.Serise
 duaTimeLoss = duarouterTripInfo['timeLoss'].copy()
-PPPTravelTime = PPPTripinfo['duration'].copy()
-PPPTimeLoss = PPPTripinfo['timeLoss'].copy()
 TMSGPPTravelTime = TMSGPPTripInfo['duration'].copy()
 TMSGPPTimeLoss = TMSGPPTripInfo['timeLoss'].copy()
 
-print(duaTravelTime.describe())
-print(duaTimeLoss.describe())
-print('='*20)
-print(PPPTravelTime.describe())
-print(PPPTimeLoss.describe())
-print('='*20)
-print(TMSGPPTravelTime.describe())
-print(TMSGPPTimeLoss.describe())
-
 
 duaType = pd.Series(['duarouter']*duaTravelTime.shape[0])
-PPPType = pd.Series(['PPPlanner']*PPPTravelTime.shape[0])
-TMSGPPType = pd.Series(['TTFMGPP']*TMSGPPTravelTime.shape[0])
+TMSGPPType = pd.Series(['本发明方法']*TMSGPPTravelTime.shape[0])
 
-travelTimeSerise = pd.concat([duaTravelTime, PPPTravelTime, TMSGPPTravelTime])
-timeLossSerise = pd.concat([duaTimeLoss, PPPTimeLoss, TMSGPPTimeLoss])
-TypeSerise = pd.concat([duaType, PPPType, TMSGPPType])
+travelTimeSerise = pd.concat([duaTravelTime, TMSGPPTravelTime])
+timeLossSerise = pd.concat([duaTimeLoss, TMSGPPTimeLoss])
+TypeSerise = pd.concat([duaType, TMSGPPType])
 
 # print(travelTimeSerise.describe())
 # print(timeLossSerise.describe())
@@ -50,8 +37,8 @@ TypeSerise = pd.concat([duaType, PPPType, TMSGPPType])
 # plt.show()
 
 
-travelTimeDF = pd.DataFrame({'Travel time (s)': travelTimeSerise, 'Types': TypeSerise})
-timeLossDF = pd.DataFrame({'Time loss (s)': timeLossSerise, 'Types': TypeSerise})
+travelTimeDF = pd.DataFrame({'旅行时间 (s)': travelTimeSerise, '模型': TypeSerise})
+timeLossDF = pd.DataFrame({'损失时间 (s)': timeLossSerise, '模型': TypeSerise})
 
 
 
@@ -61,9 +48,9 @@ timeLossDF = pd.DataFrame({'Time loss (s)': timeLossSerise, 'Types': TypeSerise}
 
 
 
-plt.figure(figsize=(9.2, 10))
+plt.figure(figsize=(12, 10))
 sns.violinplot(
-    x="Types", y="Travel time (s)", data=travelTimeDF, 
+    x="模型", y="旅行时间 (s)", data=travelTimeDF, 
     scale="width", inner="quartile", palette="coolwarm", cut=0
     )
 plt.savefig('travelTime-ap.png')
@@ -71,9 +58,9 @@ plt.close()
 # plt.show()
 
 
-plt.figure(figsize=(9.2, 10))
+plt.figure(figsize=(12, 10))
 sns.violinplot(
-    x='Types', y='Time loss (s)', data=timeLossDF,
+    x='模型', y='损失时间 (s)', data=timeLossDF,
     scale="width", inner="quartile", palette="coolwarm", cut=0
     )
 plt.savefig('timeLoss-ap.png')
